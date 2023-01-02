@@ -3,11 +3,12 @@ description: Build and test .net code
 
 inputs:
   dotnet-version:
-#    description: dotnet version
+    description: dotnet version
 #    required: false
-    default: 6
+    default: '6'
   filtered-test-category:
     default: E2E
+    description: Test category to filter out during testing
 #  who-to-greet:  # id of input
 #    description: 'Who to greet'
 #    required: true
@@ -46,6 +47,7 @@ runs:
           ${{ runner.os }}-nuget
 
     - name: Test
+      shell: bash
       run: dotnet test --logger trx --results-directory "output/test" --filter Category!=$inputs.filtered-test-category
     - name: Test Report
       uses: dorny/test-reporter@v1.6.0
