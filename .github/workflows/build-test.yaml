@@ -1,14 +1,16 @@
 name: Build and Test
 
-on: workflow_call
-
-inputs:
-  dotnet-version:
-    description: dotnet version
-    default: '6'
-  filtered-test-category:
-    default: E2E
-    description: Test category to filter out during testing
+on: 
+  workflow_call:
+    inputs: # https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs
+      dotnet-version:
+        description: dotnet version
+        type: int
+        default: 6
+      filtered-test-category:
+        description: Test category to filter out during testing
+        type: string
+        default: E2E
 
 jobs:
   build-and-test:
