@@ -1,5 +1,4 @@
 name: Build and Test
-description: Build and test .net code
 
 on: workflow_call
 
