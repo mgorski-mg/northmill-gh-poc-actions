@@ -14,6 +14,10 @@ inputs:
 jobs:
   triage:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      id-token: write
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -29,7 +33,7 @@ jobs:
           key: ${{ runner.os }}-nuget
           restore-keys: |
             ${{ runner.os }}-nuget
-  
+
       - name: Test
         shell: bash
         run: dotnet test --logger trx --results-directory "output/test" --filter Category!=${{ inputs.filtered-test-category }}
