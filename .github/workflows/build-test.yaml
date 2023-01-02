@@ -21,6 +21,9 @@ jobs:
       id-token: write
       contents: write
     steps:
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
       - name: Dump job context
         run: echo '${{ toJSON(job) }}'
       - name: Checkout repository
@@ -39,7 +42,6 @@ jobs:
             ${{ runner.os }}-nuget
 
       - name: Test
-        shell: bash
         run: dotnet test --logger trx --results-directory "output/test" --filter Category!=${{ inputs.filtered-test-category }}
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
