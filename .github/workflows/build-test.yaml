@@ -11,34 +11,35 @@ inputs:
     description: Test category to filter out during testing
 
 jobs:
-  runs-on: ubuntu-latest
-  permissions:
-    checks: write
-    id-token: write
-    contents: write
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ inputs.dotnet-version }}
-        dotnet-quality: ga
-    - name: Cache nuget packages  # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-      uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget
-        restore-keys: |
-          ${{ runner.os }}-nuget
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-quality: ga
+      - name: Cache nuget packages  # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget
+          restore-keys: |
+            ${{ runner.os }}-nuget
 
-    - name: Test
-      shell: bash
-      run: dotnet test --logger trx --results-directory "output/test" --filter Category!=${{ inputs.filtered-test-category }}
-    - name: Test Report
-      uses: dorny/test-reporter@v1.6.0
-      if: always()
-      with:
-        name: test-report
-        path: output/test/*.trx
-        reporter: dotnet-trx
+      - name: Test
+        shell: bash
+        run: dotnet test --logger trx --results-directory "output/test" --filter Category!=${{ inputs.filtered-test-category }}
+      - name: Test Report
+        uses: dorny/test-reporter@v1.6.0
+        if: always()
+        with:
+          name: test-report
+          path: output/test/*.trx
+          reporter: dotnet-trx
