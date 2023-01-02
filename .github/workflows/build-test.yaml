@@ -5,8 +5,8 @@ on:
     inputs: # https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_dispatchinputs
       dotnet-version:
         description: dotnet version
-        type: integer
-        default: 6
+        type: string
+        default: '6'
       filtered-test-category:
         description: Test category to filter out during testing
         type: string
